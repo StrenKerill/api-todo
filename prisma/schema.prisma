@@ -36,12 +36,12 @@ model Category {
 }
 
 model Note {
-  id          Int      @id @unique @default(autoincrement())
+  id          Int       @id @unique @default(autoincrement())
   header      String
   description String?
-  categoryId  Int      @default(0) @map("category_id")
-  userId      Int      @map("user_id")
-  dateCreate  DateTime @map("date_create")
-  category    Category @relation(fields: [categoryId], references: [id])
-  user        User     @relation(fields: [userId], references: [id])
+  categoryId  Int?      @map("category_id")
+  userId      Int       @map("user_id")
+  dateCreate  DateTime  @map("date_create")
+  category    Category? @relation(fields: [categoryId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
 }
