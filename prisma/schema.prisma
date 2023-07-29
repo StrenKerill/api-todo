@@ -9,3 +9,47 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Password {
+  id       Int    @id @unique @default(autoincrement())
+  password String
+  user     User?
+
+  @@map("password_todo")
+}
+
+model User {
+  id         Int        @id @unique @default(autoincrement())
+  name       String
+  passwordId Int        @unique @map("password_id")
+  dateCreate DateTime   @map("date_create")
+  password   Password   @relation(fields: [passwordId], references: [id])
+  categories Category[]
+  notes      Note[]
+
+  @@map("user_todo")
+}
+
+model Category {
+  id         Int      @id @unique @default(autoincrement())
+  name       String
+  userId     Int      @map("user_id")
+  dateCreate DateTime @map("date_create")
+  user       User     @relation(fields: [userId], references: [id])
+  notes      Note[]
+
+  @@map("category")
+}
+
+model Note {
+  id          Int      @id @unique @default(autoincrement())
+  header      String
+  description String?
+  categoryId  Int      @default(0) @map("category_id")
+  userId      Int      @map("user_id")
+  dateCreate  DateTime @map("date_create")
+  category    Category @relation(fields: [categoryId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("note")
+}
