@@ -39,6 +39,7 @@ model Note {
   id          Int       @id @unique @default(autoincrement())
   header      String
   description String?
+  isFavorite  Boolean   @default(false) @map("is_favorite")
   categoryId  Int?      @map("category_id")
   userId      Int       @map("user_id")
   dateCreate  DateTime  @map("date_create")
