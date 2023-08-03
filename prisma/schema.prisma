@@ -12,9 +12,8 @@ datasource db {
 
 model User {
   id         Int      @id @unique @default(autoincrement())
-  name       String
+  name       String   @unique
   password   String
-  salt       String
   dateCreate DateTime @map("date_create")
 
   categories Category[]
