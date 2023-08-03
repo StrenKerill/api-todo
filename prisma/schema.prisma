@@ -10,18 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Password {
-  id       Int    @id @unique @default(autoincrement())
-  password String
-  user     User?
-}
-
 model User {
-  id         Int        @id @unique @default(autoincrement())
+  id         Int      @id @unique @default(autoincrement())
   name       String
-  passwordId Int        @unique @map("password_id")
-  dateCreate DateTime   @map("date_create")
-  password   Password   @relation(fields: [passwordId], references: [id])
+  password   String
+  salt       String
+  dateCreate DateTime @map("date_create")
+
   categories Category[]
   notes      Note[]
 }
@@ -31,18 +26,20 @@ model Category {
   name       String
   userId     Int      @map("user_id")
   dateCreate DateTime @map("date_create")
-  user       User     @relation(fields: [userId], references: [id])
-  notes      Note[]
+
+  user  User   @relation(fields: [userId], references: [id])
+  notes Note[]
 }
 
 model Note {
-  id          Int       @id @unique @default(autoincrement())
+  id          Int      @id @unique @default(autoincrement())
   header      String
   description String?
-  isFavorite  Boolean   @default(false) @map("is_favorite")
-  categoryId  Int?      @map("category_id")
-  userId      Int       @map("user_id")
-  dateCreate  DateTime  @map("date_create")
-  category    Category? @relation(fields: [categoryId], references: [id])
-  user        User      @relation(fields: [userId], references: [id])
+  isFavorite  Boolean  @default(false) @map("is_favorite")
+  categoryId  Int?     @map("category_id")
+  userId      Int      @map("user_id")
+  dateCreate  DateTime @map("date_create")
+
+  category Category? @relation(fields: [categoryId], references: [id])
+  user     User      @relation(fields: [userId], references: [id])
 }
